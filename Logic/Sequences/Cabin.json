@@ -1,5 +1,5 @@
 {
-  "concrete": "What is the name of your object? (Ex: App\Controller\Car): ",
+  "concrete": "What is the name of your object? (Ex: App\\Controller\\Car): ",
   "interface": "What is the first contract of %s? (Ex: drive because it is its first purpose): ",
   "loop_0": {
     "interface_methods": "How $s is supposed to %s? (Enter verbs separated by commas, Ex: reverse, turn, indicate, horn...):  ",
