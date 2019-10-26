@@ -1,15 +1,13 @@
 {
-  "questions": {
-    "concrete": "What is the name of your object? (Ex: 'App\\Controller\\Car'): ",
-    "interface": "What is the first contract of %s? (Ex: 'drive' because it is its first purpose): ",
-    "loop_0": {
-      "interface_methods": "How $s is supposed to %s? (Enter verbs separated by commas, Ex: reverse, turn, indicate, horn...):  ",
-      "repeat": "Has %s another contract? (y/N): "
-    },
-    "loop_1": {
-      "interface": "Type the other contract of %s? (Ex: 'cool' because you need AC inside): ",
-      "interface_methods": "How $s is supposed to %s? (Enter verbs separated by commas, Ex: up, down...): ",
-      "repeat": "Has %s another contract? (y/N): "
-    }
+  "concrete": "What is the name of your object? (Ex: App\Controller\Car): ",
+  "interface": "What is the first contract of %s? (Ex: drive because it is its first purpose): ",
+  "loop_0": {
+    "interface_methods": "How $s is supposed to %s? (Enter verbs separated by commas, Ex: reverse, turn, indicate, horn...):  ",
+    "repeat": "Has %s another contract? (y/N): "
+  },
+  "loop_1": {
+    "interface": "Type the other contract of %s? (Ex: cool because you need AC inside): ",
+    "interface_methods": "How $s is supposed to %s? (Enter verbs separated by commas, Ex: up, down...): ",
+    "repeat": "Has %s another contract? (y/N): "
   }
 }
