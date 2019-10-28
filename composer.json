@@ -1,4 +1,13 @@
 {
+    "name": "edouardkombo/shubaka",
+    "description": "Design pattern code generator and helper for php",
+    "authors": [
+        {
+            "name": "Edouard Kombo",
+            "email": "edouard.kombo@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
     "require": {
         "nette/php-generator": "^3.0",
         "seld/cli-prompt": "^1.0"

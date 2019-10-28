@@ -1,8 +1,0 @@
-{
-  "concrete": "What is the name of your object? (Ex: App\\Controller\\Car): ",
-  "interface": "Specificy a new contract for __concrete__ (Single verb only, Ex: drive): ",
-  "decide_reverse": "Has __concrete__ another contract? (y/N): ",
-  "loop_interface": {
-    "method": "How __concrete__ is supposed to __interface__? (Single verbs separated by comma, Ex: Reverse,Turn):  "
-  }
-}
