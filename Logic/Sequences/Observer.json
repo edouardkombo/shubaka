@@ -1,0 +1,8 @@
+{
+  "controller": "What is the name of your controller? (Ex: App\\Controller\\ObserverController): ",
+  "subject": "What is the name of your subject? (Ex: User): ",
+  "loop_observer": {
+    "observer": "Specificy the name of your new observer (Ex: Logger): ",
+    "decide_reverse": "Is there another observer? (y/N): "
+  }
+}

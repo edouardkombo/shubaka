@@ -3,79 +3,96 @@
 namespace App\Logic\Generators\Php\DesignPattern;
 
 use App\Logic\Architecture\Abstracts\InterviewAbstract;
-use Seld\CliPrompt\CliPrompt;
+use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\PhpNamespace;
 
 /**
  * Concrete Abstraction of Interfaces
  * 
  * @author Edouard Kombo <edouard.kombo@gmail.com>
  */
-class Cabin extends InterviewAbstract
+final class Cabin extends InterviewAbstract
 {
-  protected $object = "";
-  protected $contracts = [];
+  private $className = "";
 
   public function __construct() 
   {
-    parent::__construct((new \ReflectionClass($this))->getShortName());
-
-    /*$options = ['single_object', '' ];
-
-    echo 'Do you want to generate a design pattern (1) or a simple object (2)? (1/2): ';
-
-    $answer = Seld\CliPrompt\CliPrompt::prompt();
-
-    echo 'You answered: '.$answer . PHP_EOL;
-
-
-    $class = new Nette\PhpGenerator\ClassType('Demo');
-
-    $class
-      ->setFinal()
-      ->setExtends('ParentClass')
-      ->addImplement('Countable')
-      ->addTrait('Nette\SmartObject')
-      ->addComment("Description of class.\nSecond line\n")
-      ->addComment('@property-read Nette\Forms\Form $form');
-
-    // to generate PHP code simply cast to string or use echo:
-    echo $class;
-    */
-  }
-
-  public function prompt()
-  {
-    foreach ($this->sequence as $key => $object) {
-
-      foreach ($object as $k => $question) {
-        var_dump($k);
-        echo $question;
-        $answer = CliPrompt::prompt();
-        
-        if (strpos($k, '_') !== false) {
-          if (!in_array($answer, array_keys($this->bag[$k]))) {
-            array_push($this->bag[$k], [$answer => ['methods' => []]]);
-          }
-        
-        } else {
-          $parts = explode('_', $k);
-
-          if ('loop' !== $parts[0]) {
-            $methods = explode(',', $question);
-            array_push($this->bag[$k][count($this->bag[$k])-1]['methods'], $methods);
-          
-          } else {
-            //If loop, we do another foreach
-          }
-        }
-        //var_dump($question);
-      }
-    }
+    $this->className = (new \ReflectionClass($this))->getShortName();
+    parent::__construct($this->className);
   }
 
   public function design()
   {
+    $baseNamespace = $this->classesBag['namespace'];
+    $abtractsNamespace = $this->classesBag['namespace'] . "\\Abstracts";
+    $interfacesNamespace = $this->classesBag['namespace'] . "\\Interfaces";
 
+    $fileConcrete = new PhpFile;
+    $fileAbstract = new PhpFile;
+    $fileConcrete->addComment($this->credits['generated']);
+    $fileAbstract->addComment($this->credits['generated']);
+    $fileInterfaces = [];
+
+    $namespaceConcrete = $fileConcrete->addNamespace($baseNamespace);
+    $namespaceAbstracts = $fileAbstract->addNamespace($abtractsNamespace);
+    $namespaceInterfaces = [];
+
+    $concreteKeys = array_keys($this->classesBag['concrete']);
+
+    $concreteClassName = ucfirst(end($concreteKeys));
+    $abstractClassName = $concreteClassName . "Abstract";
+
+    //Build abstract class
+    $abstract = $namespaceAbstracts->addClass($abstractClassName);
+    $abstract->setAbstract();
+    $abstract->addComment(sprintf($this->credits['file'], 'Abstract Class'));
+    $abstract->addComment($this->credits['author']);
+
+    $abstract->addMethod('__construct')
+             ->setBody("//Do Something");
+
+    //Build interfaces
+    $interfaces = [];
+    foreach ($this->classesBag['interface'] as $c => $methods) {
+      $interfaceClassName = ucfirst($c) . "Interface";
+      $fileInterfaces[$c] = new PhpFile;
+      $fileInterfaces[$c]->addComment($this->credits['generated']);
+      $namespaceInterfaces[$c] = $fileInterfaces[$c]->addNamespace($interfacesNamespace);
+      $interfaces[$c] = $namespaceInterfaces[$c]->addClass($interfaceClassName);
+      $interfaces[$c]->addComment(sprintf($this->credits['file'], 'Interface'));
+      $interfaces[$c]->addComment($this->credits['author']);
+      $interfaces[$c]->setType('interface');
+
+      $namespaceAbstracts->addUse($interfacesNamespace . "\\" . $interfaceClassName);
+      $abstract->addImplement($interfaceClassName);
+
+      foreach ($methods['methods'] as $key => $methodName) {
+        $interfaces[$c]->addMethod(ucfirst($methodName));
+        
+        //Implement methods from interfaces
+        $abstract->addMethod(ucfirst($methodName))
+        ->setBody('return true;');
+      }
+    } 
+
+    //Build concrete class
+    $concrete = $namespaceConcrete->addClass($concreteClassName);
+    $namespaceConcrete->addUse($abtractsNamespace . "\\" . $abstractClassName);
+    $concrete->addExtend($abstractClassName);
+    $concrete->addComment(sprintf($this->credits['file'], 'Concrete Class'))
+             ->addComment($this->credits['author']);
+    $concrete->addMethod('__construct')
+             ->setBody("parent::__construct();\n //You can override the abstraction class whenever possible");
+
+
+    // to generate PHP code simply cast to string or use echo:
+    $this->generatorBag[$baseNamespace] = [[$concreteClassName => $fileConcrete]];
+    $this->generatorBag[$abtractsNamespace] = [[$abstractClassName => $fileAbstract]];
+    $this->generatorBag[$interfacesNamespace] = [];
+
+    foreach ($fileInterfaces as $key => $object) {
+      array_push($this->generatorBag[$interfacesNamespace], [$key."Interface" => $object]);
+    }
   }
 }

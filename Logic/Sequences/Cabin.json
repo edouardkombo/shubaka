@@ -1,13 +1,8 @@
 {
   "concrete": "What is the name of your object? (Ex: App\\Controller\\Car): ",
-  "interface": "What is the first contract of %s? (Ex: drive because it is its first purpose): ",
-  "loop_0": {
-    "interface_methods": "How $s is supposed to %s? (Enter verbs separated by commas, Ex: reverse, turn, indicate, horn...):  ",
-    "repeat": "Has %s another contract? (y/N): "
-  },
-  "loop_1": {
-    "interface": "Type the other contract of %s? (Ex: cool because you need AC inside): ",
-    "interface_methods": "How $s is supposed to %s? (Enter verbs separated by commas, Ex: up, down...): ",
-    "repeat": "Has %s another contract? (y/N): "
+  "interface": "Specificy a new contract for __concrete__ (Single verb only, Ex: drive): ",
+  "decide_reverse": "Has __concrete__ another contract? (y/N): ",
+  "loop_interface": {
+    "method": "How __concrete__ is supposed to __interface__? (Single verbs separated by comma, Ex: Reverse,Turn):  "
   }
 }
