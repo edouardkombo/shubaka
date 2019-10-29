@@ -1,4 +1,4 @@
 {
   "assignment_interface_method": "What is the right mapping for __RIGHT-METHOD__? (__LEFT-METHODS__):  ",
-  "reverse_self": "Is the mapping complete? (y/N): "
+  "reverse_self": "Is the mapping complete? ({{y/N}}): "
 }

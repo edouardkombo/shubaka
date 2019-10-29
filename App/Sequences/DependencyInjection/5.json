@@ -1,4 +1,4 @@
 {
-  "method": "How __concrete__ is supposed to __interface__? (Single verb, Ex: Full):  ",
-  "reverse_self": "Is there another verb? (y/N): "
+  "method": "How __concrete__ is supposed to __interface__? (Single verb, {{Ex: Full}}):  ",
+  "reverse_self": "Is there another verb? ({{y/N}}): "
 }

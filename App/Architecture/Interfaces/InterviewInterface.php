@@ -3,13 +3,13 @@
 namespace App\Architecture\Interfaces;
 
 /**
- * The contract, this generator has to execute these two methods only
+ * The contract, this generator has to execute these two methods only.
  */
 interface InterviewInterface
 {
-  function prompt();
+    public function prompt();
 
-  function design();
+    public function design();
 
-  function report();
+    public function report();
 }

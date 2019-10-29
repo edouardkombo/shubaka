@@ -1,4 +1,4 @@
 {
-  "method": "How __concrete__ is supposed to __interface__? (Single verb, Ex: Reverse):  ",
-  "reverse_3": "Do you want to add another verb to this contract? (y/N): "
+  "method": "How __concrete__ is supposed to __interface__? (Single verb, {{Ex: reverse}}):  ",
+  "reverse_3": "Do you want to add another verb to __interface__? ({{y/N}}): "
 }

@@ -3,24 +3,12 @@
 namespace App\Architecture\Abstracts;
 
 use App\Architecture\Interfaces\InterviewInterface;
-use App\Sequences\SequenceLoader;
-use Seld\CliPrompt\CliPrompt;
 
 /**
  * We extend the contract for all the concrete classes.
  */
-abstract class InterviewAbstract implements InterviewInterface
+abstract class InterviewAbstract extends PromptStrategyAbstract implements InterviewInterface
 {
-    /**
-     * @var bool
-     */
-    public $enabled = false;
-
-    /**
-     * @var array
-     */
-    public $sequences = [];
-
     /**
      * @var string
      */
@@ -38,29 +26,7 @@ abstract class InterviewAbstract implements InterviewInterface
     /**
      * @var array
      */
-    public $classesBag = [
-      'namespace' => [],
-      'controller' => [],
-      'subject' => [],
-      'observer' => [],
-      'concrete' => [],
-      'interface' => [],
-      'abstract' => [],
-      'trait' => [],
-    ];
-
-    /**
-     * @var array
-     */
     public $generatorBag = [];
-
-    /**
-     * @var array
-     */
-    public $pointer = [
-      'type' => '',
-      'class' => '',
-    ];
 
     public function __construct(string $namepsace)
     {
@@ -68,72 +34,19 @@ abstract class InterviewAbstract implements InterviewInterface
         $this->pattern = end($ns);
 
         $this->credits['file'] = sprintf($this->credits['file'], $this->pattern, '%s');
-        $this->sequences = (new SequenceLoader($this->pattern))->list();
+
+        parent::__construct($this->pattern);
     }
 
-    //Same for all generators
     public function prompt(): self
     {
-        for ($i = 0; $i < count($this->sequences->list); ++$i) {
-            $sequence = new \ArrayIterator($this->sequences->get($this->sequences->list[$i]));
-
-            foreach ($sequence as $key => $question) {
-                echo $this->_replaceAliases($question, $this->pointer['class']);
-                $answer = CliPrompt::prompt();
-
-                try {
-                    if ('namespace' === $key && strpos($answer, '\\') === false) {
-                        throw new \Exception("Invalid Namespace $answer, expected a valid namespace \n");
-                    }
-                } catch (\Exception $e) {
-                    echo $e->getMessage();
-
-                    die();
-                }
-
-                if (strpos($key, '_') !== false) {
-                    $parts = explode('_', $key);
-
-                    if ('reverse' === $parts[0]) {
-                        $answer = (empty($answer)) ? 'n' : $answer;
-                        if ('n' === strtolower($answer)) {
-                            continue;
-                        }
-
-                        $iterator = (int) $parts[1];
-                        if ($i === $iterator) {
-                            --$i;
-                        } else {
-                          $i = $iterator;
-                          continue;
-                        }
-                    }
-
-                } else {
-                    if ('method' !== $key) {
-                        $this->pointer['type'] = $key;
-                    }
-
-                    if (!in_array($this->pointer['type'], array_keys($this->classesBag))) {
-                        $this->classesBag[$this->pointer['type']] = [];
-                    }
-
-                    if (!in_array($answer, array_keys($this->classesBag[$this->pointer['type']]))) {
-                        $this->classesBag[$this->pointer['type']][$answer] = ['methods' => []];
-                        $this->pointer['class'] = $answer;
-                    } else {
-                        array_push($this->classesBag[$this->pointer['type']][$this->pointer['class']]['methods'], ucfirst(trim($answer)));
-                    }
-                }
-            }
-        }
+        $this->orchestrate();
 
         return $this;
     }
 
     abstract public function design();
 
-    //Same for all generators
     public function report()
     {
         foreach ($this->generatorBag as $path => $fileEntries) {
@@ -149,38 +62,5 @@ abstract class InterviewAbstract implements InterviewInterface
                 }
             }
         }
-    }
-
-    private function _getLastClassName(string $type, ?string $className = ''): string
-    {
-        $keys = array_keys($this->classesBag[$type]);
-        $totalClasses = count($keys);
-        $result = $className;
-
-        if (!in_array($className, $keys)) {
-            $result = ($totalClasses === 0) ? '__'.$type.'__' : end($keys);
-        }
-
-        return $result;
-    }
-
-    private function _replaceAliases(string $dialog, ?string $className = ''): string
-    {
-        $result = $dialog;
-
-        if (!is_array($dialog) && strpos($dialog, '__') !== false) {
-            $result = str_replace(
-        ['__concrete__', '__interface__', '__abstract__', '__trait__'],
-        [
-          $this->_getLastClassName('concrete', $className),
-          $this->_getLastClassName('interface', $className),
-          $this->_getLastClassName('abstract', $className),
-          $this->_getLastClassName('trait', $className),
-        ],
-        $dialog
-      );
-        }
-
-        return $result;
     }
 }

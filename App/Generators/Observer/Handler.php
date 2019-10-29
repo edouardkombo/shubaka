@@ -21,8 +21,6 @@ final class Handler extends InterviewAbstract
   {
     $this->className = (new \ReflectionClass($this))->getShortName();
     parent::__construct($this->className);
-
-    $this->enabled = true;
   }
 
   public function design()
