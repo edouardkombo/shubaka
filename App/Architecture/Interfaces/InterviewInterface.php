@@ -7,7 +7,7 @@ namespace App\Architecture\Interfaces;
  */
 interface InterviewInterface
 {
-  function prompt(?array $arr = [], ?string $className = '');
+  function prompt();
 
   function design();
 

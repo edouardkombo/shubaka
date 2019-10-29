@@ -1,3 +1,4 @@
 {
-  "reverse_1": "Has __concrete__ another contract? (y/N): "
+  "method": "How __concrete__ is supposed to __interface__? (Single verb, Ex: Reverse):  ",
+  "reverse_3": "Do you want to add another verb to this contract? (y/N): "
 }
