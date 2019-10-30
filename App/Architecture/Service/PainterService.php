@@ -14,6 +14,7 @@ class PainterService implements PainterInterface
         'variable' => "\e[36m", 
         'log' => "\e[35m", 
         'note' => "\e[33m",
+        'error' => "\e[31m",
         'cancel' => "\033[0m"
     ];
 

@@ -10,6 +10,7 @@
     "minimum-stability": "dev",
     "require": {
         "nette/php-generator": "^3.0",
-        "seld/cli-prompt": "^1.0"
+        "seld/cli-prompt": "^1.0",
+        "robotomize/fujes": "^0.4.0"
     }
 }
