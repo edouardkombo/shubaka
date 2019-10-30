@@ -33,8 +33,8 @@ final class Action implements ActionInterface
             true,                     //Multiple result
             1,                        //Search quality
             'dev'                     //version
-        )->fetchFew(3);
-//var_dump($searchObject);
+        )->fetchAll();
+
         if (is_string($searchObject)) {
             echo $painter->color('error', $searchObject)."\n";
         } else {
