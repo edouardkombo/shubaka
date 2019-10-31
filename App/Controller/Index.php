@@ -17,7 +17,7 @@ final class Index implements AppInterface
     /**
      * @var array
      */
-    private $systemArgs = ['advise', 'generate', 'help'];
+    private $systemArgs = ['advise', 'generate', 'help', 'list'];
 
     public function __construct(array $argv)
     {

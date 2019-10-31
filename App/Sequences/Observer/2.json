@@ -1,4 +1,3 @@
-{
-  "observer": "Specificy the name of your new observer ({{Ex: Logger}}): ",
-  "reverse_self": "Is there another observer? ({{y/N}}): "
+{  
+  "subject": "What is the name of the subject to observe? ({{Ex: User}}): "
 }

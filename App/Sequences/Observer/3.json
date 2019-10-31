@@ -1,0 +1,4 @@
+{
+  "observer": "Specificy the name of your new __subject__'s observer ({{Ex: Logger}}): ",
+  "reverse_3": "Is there another observer for __subject__? ({{y/N}}): "
+}

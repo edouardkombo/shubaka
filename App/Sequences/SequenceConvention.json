@@ -1,0 +1,10 @@
+{
+    "cabin": {
+        "abstract": "\\Abstracts",        
+        "interface": "\\Interfaces"
+    },    
+    "observer": {
+        "subject": "\\Subject",        
+        "observer": "\\Observer"
+    }
+}

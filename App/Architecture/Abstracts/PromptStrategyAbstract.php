@@ -89,7 +89,19 @@ abstract class PromptStrategyAbstract implements PromptStrategyInterface
             }
 
             if (!in_array($answer, array_keys($this->classesBag[$this->pointer['type']]))) {
-                $this->classesBag[$this->pointer['type']][$answer] = ['methods' => []];
+                if ('namespace' === $this->pointer['type']) {
+                    $this->classesBag[$this->pointer['type']]['general'] = $answer;
+
+                    //Ex: for cabin, we will have folders __class__/Abstracts, __class__/Interfaces
+                    //While for observer, we will have folders __class__/Subject. __class__/Observer
+                    foreach ($this->sequences->convention as $k => $v) {
+                        $this->classesBag[$this->pointer['type']][$k] = $answer . $v;
+                    }
+
+                } else {
+                    $this->classesBag[$this->pointer['type']][$answer] = ['methods' => []];
+                }
+
                 $this->pointer['class'] = $answer;
             }
         }

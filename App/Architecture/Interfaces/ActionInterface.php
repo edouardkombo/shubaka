@@ -9,4 +9,6 @@ interface ActionInterface
     public function advise(string $search);
 
     public function help();
+
+    public function list();
 }

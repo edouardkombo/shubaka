@@ -37,6 +37,8 @@ final class Process implements ProcessInterface
         switch (strtolower($this->argv[1])) {
             case 'help':
                 break;
+            case 'list':
+                break;
             default:
                 if (empty($this->argv[2])) {
                     $this->fail('A second argument is expected for "'.$this->argv[1].'" Run "shubaka help" for more details.' . "\n");

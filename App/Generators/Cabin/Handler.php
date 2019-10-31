@@ -6,7 +6,7 @@ use App\Architecture\Abstracts\InterviewAbstract;
 use Nette\PhpGenerator\PhpFile;
 
 /**
- * Concrete Abstraction of Interfaces.
+ * final Abstraction of Interfaces.
  *
  * @author Edouard Kombo <edouard.kombo@gmail.com>
  */
@@ -19,76 +19,67 @@ final class Handler extends InterviewAbstract
 
     public function design(): self
     {
-        $baseNamespace = $this->classesBag['namespace'];
-        $abtractsNamespace = $this->classesBag['namespace'].'\\Abstracts';
-        $interfacesNamespace = $this->classesBag['namespace'].'\\Interfaces';
+        $finalClass          = new PhpFile();
+        $finalClasses        = array_keys($this->classesBag['final']);
+        $finalClassName      = ucfirst(end($finalClasses));
+        $finalClass->addComment($this->credits['generated']);
+        $finalClassNamespace = $finalClass->addNamespace($this->classesBag['namespace']['general']);
 
-        $fileConcrete = new PhpFile();
-        $fileAbstract = new PhpFile();
-        $fileConcrete->addComment($this->credits['generated']);
-        $fileAbstract->addComment($this->credits['generated']);
-        $fileInterfaces = [];
-
-        $namespaceConcrete = $fileConcrete->addNamespace($baseNamespace);
-        $namespaceAbstracts = $fileAbstract->addNamespace($abtractsNamespace);
-        $namespaceInterfaces = [];
-
-        $concreteKeys = array_keys($this->classesBag['concrete']);
-
-        $concretepattern = ucfirst(end($concreteKeys));
-        $abstractpattern = $concretepattern.'Abstract';
-
-        //Build abstract class
-        $abstract = $namespaceAbstracts->addClass($abstractpattern);
+        $abstractClass          = new PhpFile();
+        $abstractClassName      = $finalClassName.'Abstract';
+        $abstractClass->addComment($this->credits['generated']);
+        $abstractClassNamespace = $abstractClass->addNamespace($this->classesBag['namespace']['abstract']);
+        $abstract               = $abstractClassNamespace->addClass($abstractClassName);
         $abstract->setAbstract();
         $abstract->addComment(sprintf($this->credits['file'], 'Abstract Class'));
         $abstract->addComment($this->credits['author']);
-
         $abstract->addMethod('__construct')
-             ->setBody('//Do Something');
+             ->setBody('//Do Something');        
 
         //Build interfaces
         $interfaces = [];
+        $interfaceClasses = [];
+        $interfaceClassesNamespace = [];
         foreach ($this->classesBag['interface'] as $c => $methods) {
-            $interfacepattern = ucfirst($c).'Interface';
-            $fileInterfaces[$c] = new PhpFile();
-            $fileInterfaces[$c]->addComment($this->credits['generated']);
-            $namespaceInterfaces[$c] = $fileInterfaces[$c]->addNamespace($interfacesNamespace);
-            $interfaces[$c] = $namespaceInterfaces[$c]->addClass($interfacepattern);
+            $interfaceClassName = ucfirst($c).'Interface';
+            $interfaceClasses[$c] = new PhpFile();
+            $interfaceClasses[$c]->addComment($this->credits['generated']);
+            $interfaceClassesNamespace[$c] = $interfaceClasses[$c]->addNamespace($this->classesBag['namespace']['interface']);
+            $interfaces[$c] = $interfaceClassesNamespace[$c]->addClass($interfaceClassName);
             $interfaces[$c]->addComment(sprintf($this->credits['file'], 'Interface'));
             $interfaces[$c]->addComment($this->credits['author']);
             $interfaces[$c]->setType('interface');
 
-            $namespaceAbstracts->addUse($interfacesNamespace.'\\'.$interfacepattern);
-            $abstract->addImplement($interfacepattern);
+            $abstractClassNamespace->addUse($this->classesBag['namespace']['interface'].'\\'.$interfaceClassName);
+            $abstract->addImplement($interfaceClassName);
 
             foreach ($methods['methods'] as $key => $methodName) {
-                $interfaces[$c]->addMethod(ucfirst($methodName));
+                $interfaces[$c]->addMethod($methodName);
 
-                //Implement methods from interfaces
-                $abstract->addMethod(ucfirst($methodName))
-        ->setBody('return true;');
+                //Implement interface methods with behavior
+                $abstract->addMethod($methodName)
+                    ->setBody('return true;');
             }
         }
 
-        //Build concrete class
-        $concrete = $namespaceConcrete->addClass($concretepattern);
-        $namespaceConcrete->addUse($abtractsNamespace.'\\'.$abstractpattern);
-        $concrete->addExtend($abstractpattern);
-        $concrete->addComment(sprintf($this->credits['file'], 'Concrete Class'))
+        //Build final class
+        $final = $finalClassNamespace->addClass($finalClassName);
+        $finalClassNamespace->addUse($this->classesBag['namespace']['abstract'].'\\'.$abstractClassName);
+        $final->addExtend($abstractClassName);
+        $final->addComment(sprintf($this->credits['file'], 'final Class'))
              ->addComment($this->credits['author']);
-        $concrete->addMethod('__construct')
+        $final->addMethod('__construct')
              ->setBody("parent::__construct();\n //You can override the abstraction class whenever possible");
 
-        // to generate PHP code simply cast to string or use echo:
-        $this->generatorBag[$baseNamespace] = [[$concretepattern => $fileConcrete]];
-        $this->generatorBag[$abtractsNamespace] = [[$abstractpattern => $fileAbstract]];
-        $this->generatorBag[$interfacesNamespace] = [];
+        // Put the classes definition into the generator bag from InterviewAbstract
+        $this->generatorBag[$this->classesBag['namespace']['general']] = [[$finalClassName => $finalClass]];
+        $this->generatorBag[$this->classesBag['namespace']['abstract']] = [[$abstractClassName => $abstractClass]];
+        $this->generatorBag[$this->classesBag['namespace']['interface']] = [];
 
-        foreach ($fileInterfaces as $key => $object) {
-            array_push($this->generatorBag[$interfacesNamespace], [$key.'Interface' => $object]);
+        foreach ($interfaceClasses as $key => $object) {
+            array_push($this->generatorBag[$this->classesBag['namespace']['interface']], [$key.'Interface' => $object]);
         }
 
-      return $this;
+        return $this;
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Sequences;
 
-class SequenceLoader
+use App\Architecture\Interfaces\SequencesInterface;
+
+class SequenceLoader implements SequencesInterface
 {
     /** 
      * @var string 
@@ -14,9 +16,15 @@ class SequenceLoader
      */
     public $list = [];
 
+    /** 
+     * @var array 
+     */
+    public $convention = [];
+
     public function __construct(string $sequence)
     {
         $this->directory = __DIR__."/$sequence/";
+        $this->convention = $this->get("../SequenceConvention.json")[strtolower($sequence)];
     }
 
     public function list(): self

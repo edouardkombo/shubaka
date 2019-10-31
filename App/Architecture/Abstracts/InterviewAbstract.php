@@ -52,13 +52,13 @@ abstract class InterviewAbstract extends PromptStrategyAbstract implements Inter
         foreach ($this->generatorBag as $path => $fileEntries) {
             //Create folder
             mkdir(str_replace('\\', '/', $path), 0777, true);
-            echo "---> Creating folder related to $path inside ".__DIR__.str_replace('\\', '/', $path)."\n";
+            echo "---> Creating folder related to $path inside ".__DIR__ ."/../../" .str_replace('\\', '/', $path)."\n";
 
             foreach ($fileEntries as $key => $file) {
                 foreach ($file as $fileName => $content) {
                     //Create files
                     file_put_contents(str_replace('\\', '/', $path.'/'.$fileName).'.php', $content);
-                    echo "---> Writing content related to $fileName inside ".__DIR__.str_replace('\\', '/', $path.'/'.$fileName)."\n";
+                    echo "---> Writing content related to $fileName inside ".__DIR__ . "/../../" .str_replace('\\', '/', $path.'/'.$fileName)."\n";
                 }
             }
         }
