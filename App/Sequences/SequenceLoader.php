@@ -6,25 +6,27 @@ use App\Architecture\Interfaces\SequencesInterface;
 
 class SequenceLoader implements SequencesInterface
 {
-    /** 
-     * @var string 
+    /**
+     * @var string
      */
     private $directory;
 
-    /** 
-     * @var array 
+    /**
+     * @var array
      */
     public $list = [];
 
-    /** 
-     * @var array 
+    /**
+     * @var array
      */
     public $convention = [];
 
-    public function __construct(string $sequence)
+    public function setPattern(string $sequence): self
     {
         $this->directory = __DIR__."/$sequence/";
-        $this->convention = $this->get("../SequenceConvention.json")[strtolower($sequence)];
+        $this->convention = $this->get('../SequenceConvention.json')[strtolower($sequence)];
+
+        return $this;
     }
 
     public function list(): self
@@ -39,6 +41,7 @@ class SequenceLoader implements SequencesInterface
         }
 
         sort($this->list);
+
         return $this;
     }
 

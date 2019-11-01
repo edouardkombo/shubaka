@@ -3,34 +3,37 @@
 namespace App\Controller;
 
 use App\Architecture\Interfaces\AppInterface;
-
+use App\Controller\ServiceContainer;
 use App\Controller\Process;
 use App\Controller\Action;
 
-final class Index implements AppInterface
+class Index implements AppInterface
 {
     /**
-     * @var array
+     * @var ServiceContainer
      */
-    public $argv;
+    public $container;
 
     /**
-     * @var array
+     * @var Process
      */
-    private $systemArgs = ['advise', 'generate', 'help', 'list'];
+    private $process;
 
-    public function __construct(array $argv)
+    /**
+     * @var Action
+     */
+    private $action;
+
+    public function __construct(ServiceContainer $serviceContainer, Process $process, Action $action)
     {
-        $this->argv = $argv;
+        $this->container = $serviceContainer;
+        $this->process   = $process;
+        $this->action    = $action;
     }
 
     public function run()
     {
-        $process = new Process($this->argv, $this->systemArgs);
-        $action  = new Action();
-        
-        $process->parse();
-        
-        $action->{$process->method}($process->argument);
+        $this->process->parse();   
+        $this->action->{$this->process->method}($this->process->argument);
     }
 }

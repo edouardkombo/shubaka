@@ -3,6 +3,7 @@
 namespace App\Generators\Observer;
 
 use App\Architecture\Abstracts\InterviewAbstract;
+use App\Controller\Index as BaseController;
 use Nette\PhpGenerator\PhpFile;
 
 /**
@@ -14,9 +15,9 @@ final class Handler extends InterviewAbstract
 {
     private $className = '';
 
-    public function __construct()
+    public function __construct(BaseController $container)
     {
-        parent::__construct(__NAMESPACE__);
+        parent::__construct(__NAMESPACE__, $container);
     }
 
     public function design(): self

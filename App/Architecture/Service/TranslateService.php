@@ -3,8 +3,9 @@
 namespace App\Architecture\Service;
 
 use App\Architecture\Interfaces\TranslateInterface;
+use App\Controller\Index as BaseController;
 
-class TranslateService implements TranslateInterface
+class TranslateService extends BaseController implements TranslateInterface
 {
     /**
      * @var array
@@ -37,7 +38,7 @@ class TranslateService implements TranslateInterface
 
     public function replace()
     {
-        $painter = new PainterService();
+        $painter = $this->get('painter.service');
         $isEmpty = false;
 
         foreach ($this->matches[0] as $key => $value) {

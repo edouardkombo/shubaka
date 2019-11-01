@@ -3,7 +3,9 @@
 namespace App\Generators\Cabin;
 
 use App\Architecture\Abstracts\InterviewAbstract;
+use App\Controller\Index as BaseController;
 use Nette\PhpGenerator\PhpFile;
+use App\Controller\ServiceContainer;
 
 /**
  * final Abstraction of Interfaces.
@@ -12,8 +14,9 @@ use Nette\PhpGenerator\PhpFile;
  */
 final class Handler extends InterviewAbstract
 {
-    public function __construct()
+    public function __construct(ServiceContainer $serviceContainer)
     {
+        $this->container = $serviceContainer;
         parent::__construct(__NAMESPACE__);
     }
 

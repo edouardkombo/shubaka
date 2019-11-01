@@ -4,7 +4,6 @@ namespace App\Architecture\Abstracts;
 
 use App\Architecture\Interfaces\PromptStrategyInterface;
 use App\Architecture\Service\TranslateService;
-use App\Sequences\SequenceLoader;
 use Seld\CliPrompt\CliPrompt;
 
 abstract class PromptStrategyAbstract implements PromptStrategyInterface
@@ -32,10 +31,11 @@ abstract class PromptStrategyAbstract implements PromptStrategyInterface
      */
     public $classesBag = [];
 
-    public function __construct(string $pattern)
+    public function __construct()
     {
-        $this->sequences = (new SequenceLoader($this->pattern))->list();
-        $this->translate = new TranslateService();
+        die("hello");
+        $this->sequences = $this->container->get('sequence.loader')->setPattern($this->pattern)->list();
+        $this->translate = $this->container->get('translate.service');
     }
 
     public function orchestrate(): self
@@ -95,9 +95,8 @@ abstract class PromptStrategyAbstract implements PromptStrategyInterface
                     //Ex: for cabin, we will have folders __class__/Abstracts, __class__/Interfaces
                     //While for observer, we will have folders __class__/Subject. __class__/Observer
                     foreach ($this->sequences->convention as $k => $v) {
-                        $this->classesBag[$this->pointer['type']][$k] = $answer . $v;
+                        $this->classesBag[$this->pointer['type']][$k] = $answer.$v;
                     }
-
                 } else {
                     $this->classesBag[$this->pointer['type']][$answer] = ['methods' => []];
                 }

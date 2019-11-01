@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Architecture\Interfaces\ProcessInterface;
-use App\Architecture\Service\PainterService;
+use App\Controller\ServiceContainer;
 
 final class Process implements ProcessInterface
 {
@@ -22,12 +22,18 @@ final class Process implements ProcessInterface
      */
     public $argument = '';
 
-    public function __construct(array $argv, array $systemArgs)
+    /**
+     * @var array
+     */
+    private $systemArgs = ['advise', 'generate', 'help', 'list'];
+
+    public function __construct(array $argv, ServiceContainer $serviceContainer)
     {
         $this->argv = $argv;
+        $this->painter = $serviceContainer->get('painter.service');
 
-        if (!in_array(strtolower($argv[1]), $systemArgs)) {
-            $this->fail("First expected argument must be one of those \n\t".implode(',', $systemArgs)."\n\n");
+        if (!in_array(strtolower($argv[1]), $this->systemArgs)) {
+            $this->fail("First expected argument must be one of those \n\t".implode(',', $this->systemArgs)."\n\n");
         }
     }
 
@@ -52,7 +58,7 @@ final class Process implements ProcessInterface
 
     public function fail(string $error)
     {
-        echo (new PainterService)->color('error', $error);
+        echo $this->painter->color('error', $error);
         die();
     }
 }

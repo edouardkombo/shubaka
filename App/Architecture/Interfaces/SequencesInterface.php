@@ -7,4 +7,6 @@ interface SequencesInterface
     public function list();
 
     public function get(string $file);
+
+    public function setPattern(string $pattern);
 }

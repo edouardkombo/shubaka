@@ -3,6 +3,7 @@
 namespace App\Architecture\Abstracts;
 
 use App\Architecture\Interfaces\InterviewInterface;
+use App\Controller\ServiceContainer;
 
 /**
  * We extend the contract for all the concrete classes.
@@ -35,7 +36,7 @@ abstract class InterviewAbstract extends PromptStrategyAbstract implements Inter
 
         $this->credits['file'] = sprintf($this->credits['file'], $this->pattern, '%s');
 
-        parent::__construct($this->pattern);
+        //parent::__construct($this->pattern);
     }
 
     public function prompt(): self

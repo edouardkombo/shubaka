@@ -1,0 +1,14 @@
+{
+    "translate": {
+        "class": "App\\Architecture\\Service\\TranslateService",
+        "alias": "translate.service"
+    },
+    "painter": {
+        "class": "App\\Architecture\\Service\\PainterService",
+        "alias": "painter.service"
+    },
+    "sequence": {
+        "class": "App\\Sequences\\SequenceLoader",
+        "alias": "sequence.loader"
+    }
+}

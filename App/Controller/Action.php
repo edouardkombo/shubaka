@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
+use App\Controller\ServiceContainer;
+use App\Controller\DI;
 use App\Architecture\Interfaces\ActionInterface;
-use App\Architecture\Service\PainterService;
 use robotomize\Fujes\SearchFacade;
 use robotomize\Fujes\SearchFactory;
 
@@ -14,9 +15,16 @@ final class Action implements ActionInterface
      */
     public $painter;
 
-    public function __construct()
+    /**
+     * @var ServiceContainer
+     */
+    public $serviceContainer;
+
+
+    public function __construct(ServiceContainer $serviceContainer)
     {
-        $this->painter = new PainterService();
+        $this->painter = $serviceContainer->get('painter.service');
+        $this->serviceContainer = $serviceContainer;
     }
 
     public function generate(string $pattern)
@@ -29,7 +37,8 @@ final class Action implements ActionInterface
             return;
         }
 
-        $class = (new $namespace())->prompt()->design()->report();
+        //Get class arguments if provided
+        $class = (new DI())->resolve($namespace)->prompt()->design()->report();
     }
 
     public function advise(string $search)
