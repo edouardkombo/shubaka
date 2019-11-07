@@ -2,10 +2,10 @@
 
 namespace DesignPatterns\Behavioral\ChainOfResponsibilities\Responsible;
 
-use DesignPatterns\Behavioral\ChainOfResponsibilities\Handler;
+use DesignPatterns\Behavioral\ChainOfResponsibilities\Interviewer;
 use Psr\Http\Message\RequestInterface;
 
-class HttpInMemoryCacheHandler extends Handler
+class HttpInMemoryCacheInterviewer extends Interviewer
 {
     /**
      * @var array
@@ -14,9 +14,9 @@ class HttpInMemoryCacheHandler extends Handler
 
     /**
      * @param array $data
-     * @param Handler|null $successor
+     * @param Interviewer|null $successor
      */
-    public function __construct(array $data, Handler $successor = null)
+    public function __construct(array $data, Interviewer $successor = null)
     {
         parent::__construct($successor);
 

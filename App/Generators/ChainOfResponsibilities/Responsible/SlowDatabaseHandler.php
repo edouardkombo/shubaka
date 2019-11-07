@@ -2,10 +2,10 @@
 
 namespace DesignPatterns\Behavioral\ChainOfResponsibilities\Responsible;
 
-use DesignPatterns\Behavioral\ChainOfResponsibilities\Handler;
+use DesignPatterns\Behavioral\ChainOfResponsibilities\Interviewer;
 use Psr\Http\Message\RequestInterface;
 
-class SlowDatabaseHandler extends Handler
+class SlowDatabaseInterviewer extends Interviewer
 {
     /**
      * @param RequestInterface $request

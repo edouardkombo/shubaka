@@ -5,16 +5,16 @@ namespace DesignPatterns\Behavioral\ChainOfResponsibilities;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class Handler
+abstract class Interviewer
 {
     /**
-     * @var Handler|null
+     * @var Interviewer|null
      */
     private $successor = null;
 
-    public function __construct(Handler $handler = null)
+    public function __construct(Interviewer $Interviewer = null)
     {
-        $this->successor = $handler;
+        $this->successor = $Interviewer;
     }
 
     /**
@@ -30,7 +30,7 @@ abstract class Handler
         $processed = $this->processing($request);
 
         if ($processed === null && $this->successor !== null) {
-            // the request has not been processed by this handler => see the next
+            // the request has not been processed by this Interviewer => see the next
             $processed = $this->successor->handle($request);
         }
 

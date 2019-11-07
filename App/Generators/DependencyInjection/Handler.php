@@ -2,7 +2,7 @@
 
 namespace App\Generators\DependencyInjection;
 
-use App\Architecture\Abstracts\InterviewAbstract;
+use App\Architecture\Abstracts\InterviewerAbstract;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpNamespace;
@@ -12,7 +12,7 @@ use Nette\PhpGenerator\PhpNamespace;
  * 
  * @author Edouard Kombo <edouard.kombo@gmail.com>
  */
-final class Handler extends InterviewAbstract
+final class Interviewer extends InterviewerAbstract
 {
   private $className = "";
 

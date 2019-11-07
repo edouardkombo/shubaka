@@ -2,7 +2,7 @@
 
 namespace App\Generators\Observer;
 
-use App\Architecture\Abstracts\InterviewAbstract;
+use App\Architecture\Abstracts\InterviewerAbstract;
 use App\Controller\Index as BaseController;
 use Nette\PhpGenerator\PhpFile;
 
@@ -11,7 +11,7 @@ use Nette\PhpGenerator\PhpFile;
  *
  * @author Edouard Kombo <edouard.kombo@gmail.com>
  */
-final class Handler extends InterviewAbstract
+final class Interviewer extends InterviewerAbstract
 {
     private $className = '';
 
@@ -129,7 +129,7 @@ final class Handler extends InterviewAbstract
           '$subject->someBusinessLogic();'
         );
 
-        // Put the classes definition into the generator bag from InterviewAbstract
+        // Put the classes definition into the generator bag from InterviewerAbstract
         $this->generatorBag[$this->classesBag['namespace']['general']] = [[$controllerClassName => $controllerClass]];
         $this->generatorBag[$this->classesBag['namespace']['subject']] = [[$subjectClassName => $subjectClass]];
         $this->generatorBag[$this->classesBag['namespace']['observer']] = [];

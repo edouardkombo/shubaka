@@ -2,7 +2,7 @@
 
 namespace App\Generators\Cabin;
 
-use App\Architecture\Abstracts\InterviewAbstract;
+use App\Architecture\Abstracts\InterviewerAbstract;
 use App\Controller\Index as BaseController;
 use Nette\PhpGenerator\PhpFile;
 use App\Controller\ServiceContainer;
@@ -12,12 +12,11 @@ use App\Controller\ServiceContainer;
  *
  * @author Edouard Kombo <edouard.kombo@gmail.com>
  */
-final class Handler extends InterviewAbstract
+final class Interviewer extends InterviewerAbstract
 {
     public function __construct(ServiceContainer $serviceContainer)
     {
-        $this->container = $serviceContainer;
-        parent::__construct(__NAMESPACE__);
+        parent::__construct(__NAMESPACE__, $serviceContainer);
     }
 
     public function design(): self
@@ -74,7 +73,7 @@ final class Handler extends InterviewAbstract
         $final->addMethod('__construct')
              ->setBody("parent::__construct();\n //You can override the abstraction class whenever possible");
 
-        // Put the classes definition into the generator bag from InterviewAbstract
+        // Put the classes definition into the generator bag from InterviewerAbstract
         $this->generatorBag[$this->classesBag['namespace']['general']] = [[$finalClassName => $finalClass]];
         $this->generatorBag[$this->classesBag['namespace']['abstract']] = [[$abstractClassName => $abstractClass]];
         $this->generatorBag[$this->classesBag['namespace']['interface']] = [];

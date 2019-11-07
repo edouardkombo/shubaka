@@ -3,20 +3,20 @@
 namespace App\Architecture\Abstracts;
 
 use App\Architecture\Interfaces\PromptStrategyInterface;
-use App\Architecture\Service\TranslateService;
 use Seld\CliPrompt\CliPrompt;
+use App\Controller\ServiceContainer;
 
 abstract class PromptStrategyAbstract implements PromptStrategyInterface
 {
     /**
+     * @var ServiceContainer
+     */
+    public $container;
+
+    /**
      * @var array
      */
     public $sequences = [];
-
-    /**
-     * @var TranslateService
-     */
-    public $translate;
 
     /**
      * @var array
@@ -31,11 +31,10 @@ abstract class PromptStrategyAbstract implements PromptStrategyInterface
      */
     public $classesBag = [];
 
-    public function __construct()
+    public function __construct(string $pattern, ServiceContainer $serviceContainer)
     {
-        die("hello");
-        $this->sequences = $this->container->get('sequence.loader')->setPattern($this->pattern)->list();
-        $this->translate = $this->container->get('translate.service');
+        $this->container = $serviceContainer;
+        $this->sequences = $this->container->get('sequence.loader')->setPattern($pattern)->list();
     }
 
     public function orchestrate(): self
@@ -44,7 +43,8 @@ abstract class PromptStrategyAbstract implements PromptStrategyInterface
             $sequence = new \ArrayIterator($this->sequences->get($this->sequences->list[$i]));
 
             foreach ($sequence as $key => $question) {
-                echo $this->translate->setInput($question)
+                $translator = $this->container->get('translate.service');
+                echo $translator->setInput($question)
                     ->setBag($this->classesBag)
                     ->identify()
                     ->replace();
@@ -106,3 +106,4 @@ abstract class PromptStrategyAbstract implements PromptStrategyInterface
         }
     }
 }
+

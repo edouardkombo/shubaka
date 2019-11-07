@@ -3,9 +3,9 @@
 namespace App\Architecture\Service;
 
 use App\Architecture\Interfaces\TranslateInterface;
-use App\Controller\Index as BaseController;
+use App\Controller\ServiceContainer;
 
-class TranslateService extends BaseController implements TranslateInterface
+class TranslateService implements TranslateInterface
 {
     /**
      * @var array
@@ -27,6 +27,12 @@ class TranslateService extends BaseController implements TranslateInterface
      */
     protected $input;
 
+    public function __construct(ServiceContainer $serviceContainer)
+    {
+        var_dump($serviceContainer);
+        $this->painter = $serviceContainer->get('painter.service');
+    }
+
     public function identify(): self
     {
         preg_match_all('/\__(.*?)\__/s', $this->input, $matches);
@@ -38,7 +44,6 @@ class TranslateService extends BaseController implements TranslateInterface
 
     public function replace()
     {
-        $painter = $this->get('painter.service');
         $isEmpty = false;
 
         foreach ($this->matches[0] as $key => $value) {
@@ -50,12 +55,12 @@ class TranslateService extends BaseController implements TranslateInterface
             $keys = (in_array($formatedValue, array_keys($this->bag))) ? array_keys($this->bag[$formatedValue]) : [];
             $result = (!empty($keys)) ? end($keys) : $value;
 
-            $this->translations[$key] = $painter->color('variable', $result);
+            $this->translations[$key] = $this->painter->color('variable', $result);
         }
 
         $input = (!$isEmpty) ? str_replace($this->matches[0], $this->translations, $this->input) : $this->input;
-
-        return $painter->color('question', $input);
+var_dump($this->painter);
+        return $this->painter->color('question', $input);
     }
 
     public function setBag(array $bag): self

@@ -6,17 +6,20 @@ use App\Architecture\Interfaces\ContainerInterface;
 
 class ServiceContainer implements ContainerInterface
 {
-    private $services = [];
+    /**
+     * @var array
+     */
+    public $services = [];
 
-    public function load(string $configFilePath): self
+    public function __construct(string $configFilePath)
     {
         //Load all the config params
-        $configs = json_decode(file_get_contents($configFilePath), true);
-        foreach ($configs as $key => $config) {
-            $this->set($config['alias'], $config['class']);
+        if (file_exists($configFilePath)) {
+            $configs = json_decode(file_get_contents($configFilePath), true);
+            foreach ($configs as $key => $config) {
+                $this->set($config['alias'], $config['class']);
+            }
         }
-
-        return $this;
     }
 
     /**
@@ -94,7 +97,12 @@ class ServiceContainer implements ContainerInterface
                 }
             }
 
-            return new \ReflectionClass($name);
+            if (class_exists($name)) {
+                return new \ReflectionClass($name);
+            } else {
+                return '';
+            }
+
         } catch (\ReflectionException $e) {
             throw new \Exception($e->getMessage(), $e->getCode(), $e);
         }

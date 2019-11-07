@@ -5,11 +5,19 @@ namespace App\Controller;
 class DI
 {
     /**
+     * @var array
+     */
+    public $instances = [];
+
+    public function setInstance(string $className, $classInstance): self
+    {
+        $this->instances[$className] = $classInstance;
+
+        return $this;
+    }
+
+    /**
      * Build an instance of the given class.
-     *
-     * @param string $class
-     *
-     * @return mixed
      *
      * @throws \Exception
      */
@@ -29,7 +37,7 @@ class DI
 
         $parameters = $constructor->getParameters();
         $dependencies = $this->getDependencies($parameters);
-
+        
         return $reflector->newInstanceArgs($dependencies);
     }
 
@@ -46,11 +54,18 @@ class DI
 
         foreach ($parameters as $parameter) {
             $dependency = $parameter->getClass();
-
             if (is_null($dependency)) {
                 $dependencies[] = $this->resolveNonClass($parameter);
             } else {
-                $dependencies[] = $this->resolve($dependency->name);
+                if (in_array($dependency->name, ['string', 'array', 'bool'])) {
+                    continue;
+                }
+
+                if (in_array($dependency->name, array_keys($this->instances))) {
+                    $dependencies[] = $this->instances[$dependency->name];
+                } else {
+                    $dependencies[] = $this->resolve($dependency->name);
+                }
             }
         }
 

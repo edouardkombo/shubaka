@@ -29,21 +29,21 @@ Code
 
 You can also find this code on `GitHub`_
 
-Handler.php
+Interviewer.php
 
-.. literalinclude:: Handler.php
+.. literalinclude:: Interviewer.php
    :language: php
    :linenos:
    
 Responsible/FastStorage.php
 
-.. literalinclude:: Responsible/HttpInMemoryCacheHandler.php
+.. literalinclude:: Responsible/HttpInMemoryCacheInterviewer.php
    :language: php
    :linenos:
 
 Responsible/SlowStorage.php
 
-.. literalinclude:: Responsible/SlowDatabaseHandler.php
+.. literalinclude:: Responsible/SlowDatabaseInterviewer.php
    :language: php
    :linenos:
 

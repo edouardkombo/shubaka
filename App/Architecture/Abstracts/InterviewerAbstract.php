@@ -2,13 +2,13 @@
 
 namespace App\Architecture\Abstracts;
 
-use App\Architecture\Interfaces\InterviewInterface;
+use App\Architecture\Interfaces\InterviewerInterface;
 use App\Controller\ServiceContainer;
 
 /**
  * We extend the contract for all the concrete classes.
  */
-abstract class InterviewAbstract extends PromptStrategyAbstract implements InterviewInterface
+abstract class InterviewerAbstract extends PromptStrategyAbstract implements InterviewerInterface
 {
     /**
      * @var string
@@ -29,14 +29,14 @@ abstract class InterviewAbstract extends PromptStrategyAbstract implements Inter
      */
     public $generatorBag = [];
 
-    public function __construct(string $namepsace)
+    public function __construct(string $namepsace, ServiceContainer $serviceContainer)
     {
         $ns = explode('\\', $namepsace);
-        $this->pattern = end($ns);
+        $pattern = end($ns);
 
-        $this->credits['file'] = sprintf($this->credits['file'], $this->pattern, '%s');
-
-        //parent::__construct($this->pattern);
+        $this->credits['file'] = sprintf($this->credits['file'], $pattern, '%s');
+        
+        parent::__construct($pattern, $serviceContainer);
     }
 
     public function prompt(): self

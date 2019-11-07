@@ -2,9 +2,9 @@
 
 namespace DesignPatterns\Behavioral\ChainOfResponsibilities\Tests;
 
-use DesignPatterns\Behavioral\ChainOfResponsibilities\Handler;
-use DesignPatterns\Behavioral\ChainOfResponsibilities\Responsible\HttpInMemoryCacheHandler;
-use DesignPatterns\Behavioral\ChainOfResponsibilities\Responsible\SlowDatabaseHandler;
+use DesignPatterns\Behavioral\ChainOfResponsibilities\Interviewer;
+use DesignPatterns\Behavioral\ChainOfResponsibilities\Responsible\HttpInMemoryCacheInterviewer;
+use DesignPatterns\Behavioral\ChainOfResponsibilities\Responsible\SlowDatabaseInterviewer;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
@@ -13,15 +13,15 @@ use Psr\Http\Message\UriInterface;
 class ChainTest extends TestCase
 {
     /**
-     * @var Handler
+     * @var Interviewer
      */
     private $chain;
 
     protected function setUp(): void
     {
-        $this->chain = new HttpInMemoryCacheHandler(
+        $this->chain = new HttpInMemoryCacheInterviewer(
             ['/foo/bar?index=1' => 'Hello In Memory!'],
-            new SlowDatabaseHandler()
+            new SlowDatabaseInterviewer()
         );
     }
 

@@ -30,15 +30,18 @@ final class Action implements ActionInterface
     public function generate(string $pattern)
     {
         $pattern   = ucfirst($pattern);
-        $namespace = "App\\Generators\\$pattern\\Handler";
+        $namespace = "App\\Generators\\$pattern\\Interviewer";
 
         if (!class_exists($namespace)) {
             echo $this->painter->color('error', "This design pattern is not supportedsss. Try 'shubaka help' for more details \n");
             return;
         }
 
+        $dependencyInjector = new DI();
+        $dependencyInjector->setInstance('App\Controller\ServiceContainer', $this->serviceContainer);
+        
         //Get class arguments if provided
-        $class = (new DI())->resolve($namespace)->prompt()->design()->report();
+        $class = $dependencyInjector->resolve($namespace)->prompt()->design()->report();
     }
 
     public function advise(string $search)
