@@ -7,13 +7,11 @@ class DI
     /**
      * @var array
      */
-    public $instances = [];
+    public $instances;
 
-    public function setInstance(string $className, $classInstance): self
+    public function setInstance(string $className, $instance)
     {
-        $this->instances[$className] = $classInstance;
-
-        return $this;
+        return $this->instances[$className] = $instance;
     }
 
     /**
@@ -37,7 +35,7 @@ class DI
 
         $parameters = $constructor->getParameters();
         $dependencies = $this->getDependencies($parameters);
-        
+
         return $reflector->newInstanceArgs($dependencies);
     }
 
@@ -54,6 +52,7 @@ class DI
 
         foreach ($parameters as $parameter) {
             $dependency = $parameter->getClass();
+            var_dump($dependency, $parameter);
             if (is_null($dependency)) {
                 $dependencies[] = $this->resolveNonClass($parameter);
             } else {
@@ -86,7 +85,7 @@ class DI
         if ($parameter->isDefaultValueAvailable()) {
             return $parameter->getDefaultValue();
         }
-
+var_dump($parameter);
         throw new \Exception('Cannot resolve the unkown!?');
     }
 }

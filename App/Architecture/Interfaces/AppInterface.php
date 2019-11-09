@@ -4,5 +4,5 @@ namespace App\Architecture\Interfaces;
 
 interface AppInterface
 {
-    public function run();
+    public function run(array $argv);
 }

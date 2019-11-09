@@ -3,7 +3,6 @@
 namespace App\Architecture\Abstracts;
 
 use App\Architecture\Interfaces\InterviewerInterface;
-use App\Controller\ServiceContainer;
 
 /**
  * We extend the contract for all the concrete classes.
@@ -29,14 +28,14 @@ abstract class InterviewerAbstract extends PromptStrategyAbstract implements Int
      */
     public $generatorBag = [];
 
-    public function __construct(string $namepsace, ServiceContainer $serviceContainer)
+    public function __construct(string $namepsace)
     {
         $ns = explode('\\', $namepsace);
         $pattern = end($ns);
 
         $this->credits['file'] = sprintf($this->credits['file'], $pattern, '%s');
         
-        parent::__construct($pattern, $serviceContainer);
+        parent::__construct($pattern);
     }
 
     public function prompt(): self

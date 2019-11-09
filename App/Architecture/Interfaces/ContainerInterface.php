@@ -4,9 +4,7 @@ namespace App\Architecture\Interfaces;
 
 interface ContainerInterface
 {
-    public function get(string $id);
+    public function get(string $alias);
 
-    public function set(string $key, string $value);
-
-    public function has(string $id);
+    public function set(string $alias, string $className);
 }

@@ -24,7 +24,7 @@ class SequenceLoader implements SequencesInterface
     public function setPattern(string $sequence): self
     {
         $this->directory = __DIR__."/$sequence/";
-        $this->convention = $this->get('../SequenceConvention.json')[strtolower($sequence)];
+        $this->convention = $this->load('../SequenceConvention.json')[strtolower($sequence)];
 
         return $this;
     }
@@ -45,7 +45,7 @@ class SequenceLoader implements SequencesInterface
         return $this;
     }
 
-    public function get(string $file): array
+    public function load(string $file): array
     {
         return json_decode(file_get_contents($this->directory.$file), true);
     }
